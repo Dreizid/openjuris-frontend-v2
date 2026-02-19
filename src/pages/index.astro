@@ -1,6 +1,11 @@
 ---
 import { Scale } from "lucide-react";
 import Layout from "../layouts/Layout.astro";
+import ChatComponent from "@components/ChatComponent";
 ---
 
-<Layout />
+<Layout>
+	<div class="flex flex-1">
+		<ChatComponent client:load />
+	</div>
+</Layout>
