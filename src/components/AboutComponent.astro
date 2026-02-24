@@ -1,270 +1,88 @@
 ---
+// Import the necessary icons from lucide-react (Requires @astrojs/react integration)
+// Alternatively, you can use 'astro-icon' or inline SVGs for a pure Astro setup
+import { Scale, ShieldCheck, Bot, Heart, Github, Code, Globe } from 'lucide-react';
 ---
 
-<section class="about-section">
-  <!-- Hero Section -->
-  <div class="hero">
-    <h1 class="hero-title">Democratizing Philippine <br /> Law Intelligence</h1>
-    <p class="hero-description">
-      OpenJuris is an open-source initiative dedicated to making Philippines legal information,
-      jurisprudence, and judicial decisions accessible, searchable, and
-      understandable for everyone.
+<div class="flex-grow flex flex-col max-w-4xl mx-auto w-full p-4 md:p-8 animate-fade-in">
+
+  {/* Header Section */}
+  <div class="text-center space-y-6 py-12 border-b border-slate-200">
+    <div class="w-20 h-20 bg-blue-50 text-blue-900 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-100 shadow-sm">
+      <Scale size={40} />
+    </div>
+    <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">
+      Democratizing Philippine <br class="hidden md:block" /> Legal Intelligence
+    </h1>
+    <p class="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
+      BetterGov.ph is an open-source initiative dedicated to making Philippine laws, jurisprudence, and administrative issuances accessible, searchable, and understandable for every Filipino.
     </p>
   </div>
 
-  <!-- Feature Cards -->
-  <div class="features">
-    <div class="feature-card">
-      <div class="icon">🔍</div>
-      <h3>Verified Open Data</h3>
-      <p>
-        We aggregate and cross-reference documents from official sources and verified databases. All
-        data is provided "as is" and remains free for public use.
+  {/* Features Grid */}
+  <div class="py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-blue-900 mb-4 border border-slate-100">
+        <ShieldCheck size={20} />
+      </div>
+      <h3 class="text-lg font-bold text-slate-900 mb-2">Verified Open Data</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        We aggregate and cross-reference documents from official sources like the Official Gazette and the SC E-Library. All data is provided "as is" and remains free for public use.
       </p>
     </div>
 
-    <div class="feature-card">
-      <div class="icon">🤖</div>
-      <h3>AI-Powered Research</h3>
-      <p>
-        Our system utilizes advanced AI technology to understand
-        complex legal queries and provide accurate summaries
-        backed by exact citations.
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-blue-900 mb-4 border border-slate-100">
+        <Bot size={20} />
+      </div>
+      <h3 class="text-lg font-bold text-slate-900 mb-2">AI-Powered Research</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Our system utilizes Retrieval-Augmented Generation (RAG) technology to understand complex legal queries and provide accurate summaries backed by exact statutory citations.
       </p>
     </div>
 
-    <div class="feature-card">
-      <div class="icon">❤️</div>
-      <h3>Community Driven</h3>
-      <p>
-        Built by citizens, for citizens. We rely on the public, law students,
-        and developers to report formatting issues, update outdated data, and improve the
-        underlying codebase.
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-blue-900 mb-4 border border-slate-100">
+        <Heart size={20} />
+      </div>
+      <h3 class="text-lg font-bold text-slate-900 mb-2">Community Driven</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Built by citizens, for citizens. We rely on the public, law students, and developers to report formatting issues, update outdated laws, and improve the underlying codebase.
       </p>
     </div>
+
   </div>
 
-  <!-- Call to Action -->
-  <div class="cta-section">
-    <svg class="cta-globe" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <circle cx="100" cy="100" r="90" stroke="#fff" stroke-width="8" opacity="0.08"/>
-      <ellipse cx="100" cy="100" rx="90" ry="40" stroke="#fff" stroke-width="8" opacity="0.08"/>
-      <ellipse cx="100" cy="100" rx="40" ry="90" stroke="#fff" stroke-width="8" opacity="0.08"/>
-      <path d="M10 100h180M100 10v180" stroke="#fff" stroke-width="8" opacity="0.08"/>
-    </svg>
-    <div class="cta-content">
-      <h2>Help us build a better system.</h2>
-      <p>
-        Whether you are a developer looking to contribute to our open-source codebase, or a legal professional willing to help
-        verify document accuracy, there is a place for you here.
+  {/* CTA Section */}
+  <div class="bg-blue-900 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden mb-12 shadow-md">
+    <div class="relative z-10 md:w-2/3 space-y-6">
+      <h2 class="text-2xl md:text-3xl font-bold">Help us build a better system.</h2>
+      <p class="text-blue-100 leading-relaxed text-sm md:text-base">
+        Whether you are a developer looking to contribute to our open-source codebase on GitHub, or a legal professional willing to help verify document accuracy, there is a place for you here.
       </p>
-      <div class="cta-buttons">
-        <a href="https://github.com/Dreizid/openjuris-frontend-v2" class="btn btn-primary" target="_blank">
-          <span class="icon">📂</span> View Repository
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a href="https://github.com/iantato/OpenJuris-Scraper" class="flex items-center gap-2 bg-white text-blue-900 px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-50 transition-colors shadow-sm">
+          <Github size={18} /> View Repository
         </a>
-        <a href="/api" class="btn btn-secondary">
-          <span class="icon">📖</span> API Documentation
+        <a href="http://localhost:8000/api/public/docs#/" class="flex items-center gap-2 bg-blue-800 text-white border border-blue-700 px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-700 transition-colors">
+          <Code size={18} /> API Documentation
         </a>
       </div>
     </div>
+
+    {/* Background Decoration */}
+    <div class="hidden md:block absolute -right-20 -top-20 opacity-10 pointer-events-none">
+      <Globe size={400} />
+    </div>
   </div>
 
-  <!-- Disclaimer -->
-  <div class="disclaimer">
-    <h4>DISCLAIMER</h4>
-    <p>
-      OpenJuris is an independent, non-governmental initiative. The materials contained on this website are provided for
-      general informational purposes only and do not constitute legal advice. While we strive to keep the information up to date
-      and correct, we make no representations or warranties of any kind about the completeness, accuracy, or reliability of the
-      documents.
+  {/* Disclaimer */}
+  <div class="text-center pb-12 space-y-4">
+    <p class="text-xs text-slate-400 uppercase tracking-widest font-bold">Disclaimer</p>
+    <p class="text-sm text-slate-500 max-w-3xl mx-auto leading-relaxed">
+      BetterGov.ph is an independent, non-governmental initiative. The materials contained on this website are provided for general informational purposes only and do not constitute legal advice. While we strive to keep the information up to date and correct, we make no representations or warranties of any kind about the completeness, accuracy, or reliability of the documents.
     </p>
   </div>
-</section>
 
-<style>
-  .about-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem;
-  }
-
-  .hero {
-    text-align: center;
-    margin-bottom: 4rem;
-  }
-
-  .hero-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1a202c;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-
-  .hero-description {
-    font-size: 1.125rem;
-    color: #718096;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.6;
-  }
-
-  .features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-bottom: 4rem;
-  }
-
-  .feature-card {
-    padding: 2rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    text-align: center;
-    background: white;
-    transition: box-shadow 0.3s ease;
-  }
-
-  .feature-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .feature-card .icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .feature-card h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin-bottom: 1rem;
-  }
-
-  .feature-card p {
-    font-size: 0.95rem;
-    color: #4a5568;
-    line-height: 1.6;
-  }
-
-  .cta-section {
-    background: linear-gradient(135deg, #2d3e82 0%, #1e2a5e 100%);
-    border-radius: 20px;
-    padding: 3rem 2rem;
-    margin-bottom: 4rem;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 6px 24px rgba(44, 62, 130, 0.10);
-    }
-
-    .cta-globe {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60%;
-    height: 100%;
-    min-width: 220px;
-    max-width: 400px;
-    z-index: 0;
-    pointer-events: none;
-    }
-
-    .cta-content {
-    position: relative;
-    z-index: 1;
-    }
-
-  .cta-content h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-
-  .cta-content p {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    opacity: 0.95;
-    max-width: 600px;
-  }
-
-  .cta-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .btn-primary {
-    background: white;
-    color: #2d3e82;
-  }
-
-  .btn-primary:hover {
-    background: #f7fafc;
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-  }
-
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-  }
-
-  .disclaimer {
-    text-align: center;
-    padding: 2rem;
-    background: #f7fafc;
-    border-radius: 8px;
-  }
-
-  .disclaimer h4 {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #718096;
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
-  }
-
-  .disclaimer p {
-    font-size: 0.875rem;
-    color: #4a5568;
-    line-height: 1.6;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 768px) {
-    .hero-title {
-      font-size: 2rem;
-    }
-
-    .cta-content h2 {
-      font-size: 1.5rem;
-    }
-
-    .cta-buttons {
-      flex-direction: column;
-    }
-
-    .btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-</style>
+</div>
