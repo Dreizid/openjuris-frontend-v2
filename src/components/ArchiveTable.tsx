@@ -126,7 +126,7 @@ function ArchiveTableRow({
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-slate-600 inline-block tracking-wider">
-        <span className="text-[10px] bg-slate-100 px-2 py-1 rounded uppercase">
+        <span className="text-[10px] bg-slate-100 px-2 py-1 rounded uppercase font-bold">
           {doc_type}
         </span>
       </td>
