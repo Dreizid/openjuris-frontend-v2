@@ -35,11 +35,6 @@ if (!result || !result.content_markdown ) {
     		</div>
 			<div class="my-6 border-t border-slate-200 w-16 mx-auto"></div>`
 	html += rendered.html;
-	html += `<div class="border-t border-slate-200 mt-8 pt-4 text-center text-slate-500 bg-white">
-            This document was retrieved from <a href="https://lawphil.net/" target="_blank" rel="noopener"><b>Lawphil</b></a>
-            via the OpenJuris Open Data API.<br />
-            <button id="open-mdl-btn" class="cursor-pointer text-blue-800 hover:underline"> Spot an error? Report an issue </button>
-        	</div>`;
 	toc = rendered.toc;
 }
 

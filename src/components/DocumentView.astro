@@ -7,10 +7,12 @@ const { html } = Astro.props;
 ---
 
 <div class="flex flex-1 min-h-0 justify-center">
-	<div class="overflow-y-auto scroll-smooth">
-		<article
-			class="max-w-4xl shadow-md bg-white p-16 m-4 font-serif border border-slate-200 rounded min-w-4xl min-h-screen"
-			set:html={html}
-		/>
-	</div>
+  <div class="flex flex-col min-h-[70vh] max-w-4xl w-full shadow-md bg-white p-8 m-4 font-serif border border-slate-200 rounded">
+    <article class="flex-1" set:html={html} />
+    <div class="mt-auto border-t border-slate-200 pt-4 text-center text-slate-500 bg-white">
+      This document was retrieved from <a href="https://lawphil.net/" target="_blank" rel="noopener"><b>Lawphil</b></a>
+      via the OpenJuris Open Data API.<br />
+      <button id="open-mdl-btn" class="cursor-pointer text-blue-800 hover:underline">Spot an error? Report an issue</button>
+    </div>
+  </div>
 </div>

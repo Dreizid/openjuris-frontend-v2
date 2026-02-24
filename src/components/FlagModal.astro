@@ -6,6 +6,7 @@ const { id } = Astro.props;
 ---
 
 <dialog
+	id="flag-modal"
 	class="fixed inset-0 m-auto rounded-2xl shadow-2xl p-0 backdrop:bg-slate-900/50 open:flex flex-col max-w-xl w-full backdrop:backdrop-blur-[2px]"
 >
 	<form>
@@ -65,25 +66,25 @@ const { id } = Astro.props;
 	const closeBtn = document.querySelector("#close-mdl-btn");
 	const cancelBtn = document.querySelector("#cancel-mdl-btn");
 
-	const dialog = document.querySelector("dialog");
+	const flagDialog = document.querySelector("#flag-modal") as HTMLDialogElement;
 	const submitBtn = document.querySelector("#submit-btn");
 
 	openBtn.forEach(btn => {
 		btn.addEventListener("click", () => {
-			dialog?.showModal();
+			flagDialog?.showModal();
 		});
 	});
 
 	const closeModal = (event: Event) => {
 		event.preventDefault();
-		dialog?.close();
+		flagDialog?.close();
 	};
 	closeBtn?.addEventListener("click", closeModal);
 	cancelBtn?.addEventListener("click", closeModal);
 
-	dialog?.addEventListener("click", (event: Event) => {
-		if (event.target === dialog) {
-			dialog.close();
+	flagDialog?.addEventListener("click", (event: Event) => {
+		if (event.target === flagDialog) {
+			flagDialog.close();
 		}
 	});
 
