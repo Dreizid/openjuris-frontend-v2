@@ -1,0 +1,79 @@
+---
+import { getSession } from "auth-astro/server";
+import { LogOut } from "lucide-react";
+const session = await getSession(Astro.request);
+---
+
+{
+	!session ? (
+		<button
+			id="open-login"
+			class="bg-blue-900 hover:bg-blue-800 text-white py-2 px-6 rounded-lg transition-all"
+		>
+			Sign In
+		</button>
+	) : (
+		<div class="flex items-center gap-4">
+			<span class="text-sm text-gray-600">Counsel {session.user?.name}</span>
+			<button id="logout" class="hover:text-blue-600 transition-all">
+				<LogOut size={18} />
+			</button>
+		</div>
+	)
+}
+
+<dialog
+	id="login-modal"
+	class="backdrop:bg-black/50 backdrop:backdrop-blur-sm rounded-2xl shadow-2xl p-0 overflow-hidden w-full max-w-md border-0 m-auto"
+>
+	<div class="p-8 bg-white flex flex-col items-center text-center">
+		<div class="mb-4 bg-blue-900 p-3 rounded-full">⚖️</div>
+		<h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome to OpenJuris</h2>
+		<p class="text-gray-500 mb-8">
+			Access the complete Philippine legal library and AI assistant.
+		</p>
+
+		<button
+			id="auth0-login"
+			class="w-full bg-blue-900 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 hover:bg-blue-700 transition-all"
+		>
+			Continue with Auth0
+		</button>
+
+		<button
+			id="close-modal"
+			class="mt-4 text-sm text-gray-400 hover:text-gray-600"
+		>
+			Cancel
+		</button>
+	</div>
+</dialog>
+
+<script>
+	const { signIn, signOut } = await import("auth-astro/client");
+
+	const modal = document.querySelector("#login-modal") as HTMLDialogElement;
+	const openBtn = document.querySelector("#open-login");
+	const closeBtn = document.querySelector("#close-modal");
+	const auth0Btn = document.querySelector("#auth0-login");
+	const logoutBtn = document.querySelector("#logout");
+
+	// Open modal
+	openBtn?.addEventListener("click", () => modal?.showModal());
+
+	// Close modal
+	closeBtn?.addEventListener("click", () => modal?.close());
+
+	// Handle Auth0 Logic
+	auth0Btn?.addEventListener("click", () => {
+		signIn("auth0");
+	});
+
+	// Handle Logout
+	logoutBtn?.addEventListener("click", () => signOut());
+
+	// Close if clicking outside the modal box
+	modal?.addEventListener("click", (e) => {
+		if (e.target === modal) modal.close();
+	});
+</script>

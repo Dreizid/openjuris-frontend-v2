@@ -3,13 +3,19 @@ import HeroText from "./HeroText";
 import SearchInput from "./SearchInput";
 import ChatBubble from "./ChatBubble";
 import { useState } from "react";
+import { askChatbot } from "@/services/chatService";
+import { buildUrl } from "@/utils/url-builder";
 
 interface Message {
   isSender: boolean;
   message: string;
 }
 
-function ChatComponent() {
+interface ChatProps {
+  token?: string;
+}
+
+function ChatComponent({ token }: ChatProps) {
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -20,33 +26,57 @@ function ChatComponent() {
     setMessages((prev) => [...prev, userMsg, aiMsg]);
     setIsStreaming(true);
 
-    const response = await fetch("http://127.0.0.1:8000/query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: prompt }),
-    });
-
-    if (response.body == null) {
-      return;
-    }
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-
-    let buffer = "";
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        break;
-      }
-      const rawChunk = decoder.decode(value, { stream: true });
-
-      buffer += rawChunk;
-      const parts = buffer.split("\n\n");
-
-      buffer = parts.pop() ?? "";
-      parts.map((part) => {
-        processChunk(part);
+    try {
+      const BASE_URL = import.meta.env.PUBLIC_RAG_API;
+      const url = buildUrl("/api/v1/chat/stream", BASE_URL, { query: prompt });
+      const response = await fetch(url, {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      if (!response.ok) {
+        const errorMessage =
+          response.status === 401
+            ? "Please sign in to use the AI chat feature."
+            : "Something went wrong on our end. Please try again.";
+
+        const fakeJsonChunk = JSON.stringify({
+          token: errorMessage,
+
+          is_final: false,
+        });
+
+        processChunk(`data: ${fakeJsonChunk}`);
+
+        setIsStreaming(false);
+        return;
+      }
+      if (response.body == null) {
+        return;
+      }
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      let buffer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+        const rawChunk = decoder.decode(value, { stream: true });
+
+        buffer += rawChunk;
+        const parts = buffer.split("\n\n");
+
+        buffer = parts.pop() ?? "";
+        parts.map((part) => {
+          processChunk(part);
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 

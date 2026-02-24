@@ -2,10 +2,14 @@
 import { Scale } from "lucide-react";
 import Layout from "../layouts/Layout.astro";
 import ChatComponent from "@components/ChatComponent";
+import { getSession } from "auth-astro/server";
+
+const session = await getSession(Astro.request);
+const token = session?.accessToken;
 ---
 
 <Layout>
 	<div class="flex flex-1">
-		<ChatComponent client:load />
+		<ChatComponent token={token} client:load />
 	</div>
 </Layout>

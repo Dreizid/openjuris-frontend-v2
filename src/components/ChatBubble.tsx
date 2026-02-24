@@ -1,5 +1,6 @@
 import { Scale, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 interface ChatBubbleProps {
   data: string;
@@ -25,7 +26,7 @@ function ChatBubble({ data, sender }: ChatBubbleProps) {
       <div
         className={`p-4 rounded-b-xl shadow-sm max-w-2xl leading-relaxed ${containerStyle}`}
       >
-        <ReactMarkdown>{data}</ReactMarkdown>
+        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{data}</ReactMarkdown>
       </div>
     </div>
   );

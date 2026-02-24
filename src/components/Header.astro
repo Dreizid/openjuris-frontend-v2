@@ -1,5 +1,6 @@
 ---
 import { Scale } from "lucide-react";
+import LoginModal from "./LoginModal.astro";
 const currentPath = Astro.url.pathname;
 const active =
 	"h-full flex items-center text-blue-900 border-b border-blue-900";
@@ -39,13 +40,10 @@ const inactive =
 					class={currentPath === "/archive" ? active : inactive}
 					>Browse Archive</a
 				>
-				<a
-					href="/about"
-					class={currentPath === "/about" ? active : inactive}
-				>About</a>
-				<button class="bg-blue-900 rounded-md text-white p-2">
-					Contribute
-				</button>
+				<a href="/about" class={currentPath === "/about" ? active : inactive}
+					>About</a
+				>
+				<LoginModal />
 			</div>
 		</div>
 	</div>
