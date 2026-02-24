@@ -6,9 +6,10 @@ export interface Document {
   title: string;
   category: string;
   doc_type: string;
-  date_promulgated: string;
   source_url: string;
+  date_promulgated: string;
   date_effectivity?: string | null;
+  date_published?: string | null;
   short_title?: string | null;
   metadata_fields: DocumentMetadata;
 }
@@ -25,15 +26,16 @@ export interface DocumentResponse {
   items: Document[];
 }
 
+const DATE_FORMATTER = Intl.DateTimeFormat("en-US", {
+  month: "short",
+  year: "numeric",
+});
+
 function ArchiveTable({ items, limit }: DocumentResponse) {
   const headers = ["code", "title", "type", "date", "sources"];
   const emptyRowCount = Math.max(0, limit - items.length);
   const displayRows = [...items, ...Array(emptyRowCount).fill(null)];
 
-  const formatter = Intl.DateTimeFormat("en-US", {
-    month: "short",
-    year: "numeric",
-  });
   return (
     <div className="w-full  border border-slate-200 rounded-lg">
       <div className="overflow-x-auto">
@@ -51,36 +53,13 @@ function ArchiveTable({ items, limit }: DocumentResponse) {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-slate-200">
-            {displayRows.map((props) =>
+            {displayRows.map((props: Document) =>
               props ? (
-                <tr className="">
-                  <td className="px-6 py-4 text-blue-900 whitespace-nowrap font-mono font-medium text-sm">
-                    {props.canonical_citation}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="line-clamp-1 text-sm font-medium text-slate-900">
-                      {props.title}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-slate-600 inline-block tracking-wider">
-                    <span className="text-[10px] bg-slate-100 px-2 py-1 rounded uppercase">
-                      {props.doc_type}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">
-                    {formatter.format(new Date(props.date_promulgated))}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">
-                    <div className="flex items-center gap-1.5">
-                      <Globe size={12} className="text-slate-400" />
-                      <span>{props.metadata_fields.source_name}</span>
-                    </div>
-                  </td>
-                </tr>
+                <ArchiveTableRow {...props} key={props.id} />
               ) : (
                 <tr>
-                  <td colSpan={4}>
-                    <div className="h-[69px]">&nbsp;</div>
+                  <td colSpan={5}>
+                    <div className="h-[55px]">&nbsp;</div>
                   </td>
                 </tr>
               ),
@@ -92,4 +71,46 @@ function ArchiveTable({ items, limit }: DocumentResponse) {
   );
 }
 
+function ArchiveTableRow({
+  id,
+  canonical_citation,
+  title,
+  date_promulgated,
+  date_effectivity,
+  date_published,
+  doc_type,
+  metadata_fields,
+}: Document) {
+  const rawDate = date_promulgated ?? date_effectivity ?? date_published;
+
+  const displayDate = rawDate ? DATE_FORMATTER.format(new Date(rawDate)) : "-";
+  return (
+    <tr className="group relative">
+      <td className="px-6 py-4 text-blue-900 whitespace-nowrap font-mono font-medium text-sm">
+        <a className="after:absolute after:inset-0" href={`/archive/${id}`}>
+          {canonical_citation}
+        </a>
+      </td>
+      <td className="px-6 py-4">
+        <div className="line-clamp-1 text-sm font-medium text-slate-900">
+          {title}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-slate-600 inline-block tracking-wider">
+        <span className="text-[10px] bg-slate-100 px-2 py-1 rounded uppercase">
+          {doc_type}
+        </span>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">
+        {displayDate}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">
+        <div className="flex items-center gap-1.5 bg-white">
+          <Globe size={12} className="text-slate-400" />
+          <span>{metadata_fields.source_name}</span>
+        </div>
+      </td>
+    </tr>
+  );
+}
 export default ArchiveTable;

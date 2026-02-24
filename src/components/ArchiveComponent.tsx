@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ArchiveTable from "./ArchiveTable";
 import type { Document } from "./ArchiveTable";
 import ArchivePagination from "./ArchivePagination";
+import { getDocuments } from "@/services/documentService";
 
 function ArchiveComponent() {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -17,18 +18,16 @@ function ArchiveComponent() {
   const tempTotal = 54;
   const [offset, setOffset] = useState(0);
   const [documents, setDocuments] = useState([]);
+  const [error, setError] = useState("");
   const fetchDocuments = async () => {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/documents/?limit=${maxLimit}&offset=${offset}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      },
-    );
-    const results = await response.json();
-    console.log(results);
-    const data = results.items.map((doc: Document) => ({ ...doc }));
-    setDocuments(data);
+    try {
+      const docs = await getDocuments(maxLimit, offset);
+      setDocuments(docs);
+      setError("");
+    } catch (error) {
+      console.log(error);
+      setError("Something went wrong while fetching documents");
+    }
   };
 
   useEffect(() => {
