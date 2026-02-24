@@ -116,29 +116,29 @@ function ChatComponent({ token }: ChatProps) {
   const inputArea = messages.length === 0 ? "flex-1" : "sticky bottom-0 mb-8";
 
   return (
-    <div className="flex flex-col w-full max-w-6xl mx-auto justify-center min-h-screen">
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        {messages.length === 0 ? (
-          <div className="h-full flex items-center justify-center">
-            <HeroText />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            {messages.map((message, index) => (
-              <ChatBubble
-                key={index}
-                data={message.message}
-                sender={message.isSender}
-              />
-            ))}
-          </div>
-        )}
+      <div className="flex flex-col w-full max-w-3xl mx-auto justify-center">
+        <div className="flex-1 min-h-[300px] overflow-y-auto p-4 space-y-6">
+          {messages.length === 0 ? (
+            <div className="h-full flex items-center justify-center">
+              <HeroText />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {messages.map((message, index) => (
+                <ChatBubble
+                  key={index}
+                  data={message.message}
+                  sender={message.isSender}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="flex justify-center mt-4 mb-8">
+          <SearchInput onSearch={fetchQuery} isStreaming={isStreaming} />
+        </div>
       </div>
-      <div className={`flex justify-center ${inputArea}`}>
-        <SearchInput onSearch={fetchQuery} isStreaming={isStreaming} />
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
 export default ChatComponent;

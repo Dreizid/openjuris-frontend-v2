@@ -1,4 +1,4 @@
-import { Globe, ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+import { Globe, ChevronUp, ChevronDown, ChevronsUpDown, ChevronRight } from "lucide-react";
 
 export interface Document {
   id: string;
@@ -46,7 +46,8 @@ function ArchiveTable({
     { key: "title", label: "title", sortable: false },
     { key: "doc_type", label: "type", sortable: true },
     { key: "date_promulgated", label: "date", sortable: true },
-    { key: "source", label: "sources", sortable: false }
+    { key: "source", label: "sources", sortable: false },
+    { key: "chevron", label: "", sortable: false }
   ]
 
   const emptyRowCount = Math.max(0, limit - items.length);
@@ -55,15 +56,14 @@ function ArchiveTable({
   return (
     <div className="w-full border border-slate-200 rounded-lg">
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-slate-200 table-fixed">
+      <table className="min-w-full divide-y divide-slate-200 table-fixed bg-slate-100">
         <thead>
           <tr>
             {headers.map(({ key, label, sortable }) => (
               <th
                 key={key}
                 className={
-                  "transition-colors text-sm uppercase font-bold text-slate-500 py-2 px-6 text-left bg-slate-100 " +
-                  (sortable ? "hover:bg-slate-200 cursor-pointer select-none" : "cursor-default select-none")
+                  "transition-colors text-sm uppercase font-bold text-slate-500 py-2 px-6 text-left hover:bg-slate-200 select-none cursor-pointer"
                 }
                 onClick={sortable ? () => onSortChange(key) : undefined}
               >
@@ -138,6 +138,9 @@ function ArchiveTableRow({
           <Globe size={12} className="text-slate-400" />
           <span>{metadata_fields.source_name}</span>
         </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">
+        <ChevronRight size={16} className="text-slate-300 group-hover:text-blue-900 transition-colors"/>
       </td>
     </tr>
   );
