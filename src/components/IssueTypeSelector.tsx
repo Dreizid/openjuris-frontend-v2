@@ -11,7 +11,7 @@ function IssueTypeSelector() {
           type="button"
           key={issue}
           onClick={() => setActiveIssue(issue)}
-          className={`border border-slate-200 rounded-lg p-2 text-slate-500 hover:bg-blue-50 hover:border-blue-200 hover:shadow ${activeIssue === issue ? "bg-blue-50 border-blue-200" : ""}`}
+          className={`transition-colors cursor-pointer border border-slate-200 rounded-lg p-2 text-slate-500 hover:bg-blue-50 hover:border-blue-200 hover:shadow ${activeIssue === issue ? "bg-blue-50 border-blue-200" : ""}`}
         >
           {issue}
         </button>

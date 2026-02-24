@@ -9,18 +9,30 @@ import Layout from "@/layouts/Layout.astro";
 import { removeFrontmatter } from "@/utils/frontmatter-parser";
 import { renderMarkdownWithToc } from "@/utils/markdown-engine";
 import { getDocumentById } from "@/services/documentService";
+import { type TocItem } from "@/utils/markdown-engine";
 
 interface Props {
 	id: string;
 }
+
 const { id } = Astro.params;
 
 if (!id) {
 	return Astro.redirect("/404");
 }
 const result = await getDocumentById(id);
-const cleanMarkdown = removeFrontmatter(result.content_markdown);
-const { html, toc } = await renderMarkdownWithToc(cleanMarkdown);
+
+let html
+let toc: TocItem[] = []
+if (!result || !result.content_markdown ) {
+	html = `<div class="text-center py-16 content-center h-screen text-slate-700"><h1>404 Not Found</h1><p>Document not found.</p></div>`;
+} else {
+	const cleanMarkdown = removeFrontmatter(result.content_markdown);
+	const rendered = await renderMarkdownWithToc(cleanMarkdown);
+	html = rendered.html;
+	toc = rendered.toc;
+}
+
 const source = result.metadata_fields.source_name;
 const sources = [source]; // Replace with sources array
 ---
@@ -33,16 +45,16 @@ const sources = [source]; // Replace with sources array
 		/>
 		<div class="flex flex-1 min-h-0 justify-center">
 			<div class="flex max-w-6xl w-full">
-				<div>
-					<aside class="shrink-0 w-56 p-4 flex flex-col flex-1 min-h-0">
-						<DocumentTableOfContent headers={toc} />
+					<aside class="shrink-0 w-56">
+						<div class="sticky top-36 flex flex-col gap-4">
+							<DocumentTableOfContent headers={toc} />
+							<DocumentSourcePicker
+								currentSource={source}
+								sources={sources}
+								currentSourceUrl={result.source_url}
+							/>
+						</div>
 					</aside>
-					<DocumentSourcePicker
-						currentSource={source}
-						sources={sources}
-						currentSourceUrl={result.source_url}
-					/>
-				</div>
 				<DocumentView html={html} />
 			</div>
 		</div>

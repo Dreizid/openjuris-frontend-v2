@@ -13,6 +13,12 @@ interface FlagProps {
   description: string
 }
 
+export interface TocItem {
+  text: string
+  slug: string
+  href: string
+}
+
 interface FlagStatus {
   success: boolean
   message: string

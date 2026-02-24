@@ -10,9 +10,9 @@ const { id } = Astro.props;
 >
 	<form>
 		<div class="bg-white flex-1 max-w-2xl">
-			<div class="border-b border-slate-200 flex justify-between py-4 px-8">
+			<div style="align-items: center" class="border-b border-slate-200 flex justify-between py-4 px-8">
 				<h1 class="font-bold">Report an Issue</h1>
-				<button id="close-mdl-btn" class="text-slate-500">
+				<button id="close-mdl-btn" class="text-slate-500 cursor-pointer rounded-full p-1 hover:bg-slate-100 transition-colors">
 					<X size={24} />
 				</button>
 			</div>
@@ -42,13 +42,13 @@ const { id } = Astro.props;
 					<button
 						type="button"
 						id="cancel-mdl-btn"
-						class="rounded-lg flex justify-center bg-white text-slate-900 px-3 py-1.5 border border-slate-200"
+						class="rounded-lg flex justify-center bg-white text-slate-900 px-3 py-1.5 border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors"
 						>Cancel</button
 					>
 					<button
 						type="submit"
 						id="submit-btn"
-						class="rounded-lg flex justify-center bg-blue-900 text-white px-3 py-1.5 border border-blue-900"
+						class="rounded-lg flex justify-center bg-blue-900 text-white px-3 py-1.5 border border-blue-900 cursor-pointer"
 						>Submit Report</button
 					>
 				</div>

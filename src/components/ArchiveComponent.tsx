@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ArchiveTable from "./ArchiveTable";
 import type { Document } from "./ArchiveTable";
 import ArchivePagination from "./ArchivePagination";
-import { getDocuments } from "@/services/documentService";
+import { getDocuments, getDocumentsSorted, getDocumentsTotal } from "@/services/documentService";
 
 function ArchiveComponent() {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -15,13 +15,33 @@ function ArchiveComponent() {
   ];
 
   const maxLimit = 8;
-  const tempTotal = 54;
+  const fetchTotal = async () => {
+    try {
+      const tempTotal = await getDocumentsTotal("documents")
+      setTempTotal(tempTotal[0].stat);
+      setError("");
+    } catch (error) {
+      console.log(error);
+      setError("Something went wrong while fetching total statistics");
+    }
+  }
+
+  // States
+  const [tempTotal, setTempTotal] = useState(0)
   const [offset, setOffset] = useState(0);
   const [documents, setDocuments] = useState([]);
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [sortAsc, setSortAsc] = useState(false);
   const [error, setError] = useState("");
+
   const fetchDocuments = async () => {
     try {
-      const docs = await getDocuments(maxLimit, offset);
+      let docs;
+      if (sortBy) {
+        docs = await getDocumentsSorted(maxLimit, offset, sortBy, sortAsc);
+      } else {
+        docs = await getDocuments(maxLimit, offset);
+      }
       setDocuments(docs);
       setError("");
     } catch (error) {
@@ -30,9 +50,23 @@ function ArchiveComponent() {
     }
   };
 
+  const handleSortChange = (column: string) => {
+    if (sortBy === column) {
+      setSortAsc((asc) => !asc);
+    } else {
+      setSortBy(column);
+      setSortAsc(true); // default to ascending
+    }
+  };
+
+  useEffect(() => {
+    fetchTotal();
+  }, []);
+
+
   useEffect(() => {
     fetchDocuments();
-  }, [offset]);
+  }, [offset, sortBy, sortAsc]);
 
   return (
     <div className="flex-1 m-8">
@@ -56,7 +90,13 @@ function ArchiveComponent() {
         </div>
       </div>
       <div className="mb-8">
-        <ArchiveTable items={documents} limit={maxLimit} />
+        <ArchiveTable
+          items={documents}
+          limit={maxLimit}
+          sortBy={sortBy}
+          sortAsc={sortAsc}
+          onSortChange={handleSortChange}
+        />
       </div>
       <ArchivePagination
         offset={offset}

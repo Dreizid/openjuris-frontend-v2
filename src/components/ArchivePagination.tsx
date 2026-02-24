@@ -34,7 +34,7 @@ function ArchivePagination({
       <div className="flex items-center gap-2 ">
         <button
           disabled={currentPage === 1}
-          className="flex bg-white text-sm text-slate-600 border border-slate-200 rounded-md gap-1 px-3 py-1.5 font-medium disabled:opacity-50 disabled:bg-slate-50"
+          className="flex bg-white text-sm text-slate-600 border border-slate-200 rounded-md gap-1 px-3 py-1.5 font-medium disabled:opacity-50 disabled:bg-slate-50 cursor-pointer transition-color hover:bg-slate-50"
           onClick={() => setCurrentPage((prev) => prev - 1)}
         >
           <ChevronLeft size={18} />
@@ -45,14 +45,14 @@ function ArchivePagination({
             <button
               key={buttonNumber}
               onClick={() => setCurrentPage(buttonNumber)}
-              className={`w-8 h-8 rounded-md border text-sm ${currentPage === buttonNumber ? "bg-blue-900 text-white border-blue-900" : "bg-white border-slate-200 text-slate-600"}`}
+              className={`w-8 h-8 rounded-md border text-sm ${currentPage === buttonNumber ? "bg-blue-900 text-white border-blue-900" : "bg-white border-slate-200 text-slate-600 cursor-pointer hover:bg-slate-50 transition-color"}`}
             >
               {buttonNumber}
             </button>
           ))}
         </div>
         <button
-          className="flex bg-white text-sm text-slate-600 border border-slate-200 rounded-md gap-1 px-3 py-1.5 disabled:bg-slate-50 disabled:opacity-50"
+          className="flex bg-white text-sm text-slate-600 border border-slate-200 rounded-md gap-1 px-3 py-1.5 disabled:bg-slate-50 disabled:opacity-50 cursor-pointer hover:bg-slate-50 transition-colors"
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((prev) => prev + 1)}
         >

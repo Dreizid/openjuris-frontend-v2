@@ -74,7 +74,7 @@ function ChatComponent() {
   const inputArea = messages.length === 0 ? "flex-1" : "sticky bottom-0 mb-8";
 
   return (
-    <div className="flex flex-col w-full max-w-6xl mx-auto justify-center">
+    <div className="flex flex-col w-full max-w-6xl mx-auto justify-center min-h-screen">
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center">

@@ -1,4 +1,4 @@
-import { Globe } from "lucide-react";
+import { Globe, ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
 
 export interface Document {
   id: string;
@@ -24,6 +24,9 @@ export interface DocumentResponse {
   limit: number;
   offset?: number;
   items: Document[];
+  sortBy: string | null;
+  sortAsc: boolean;
+  onSortChange: (column: string) => void;
 }
 
 const DATE_FORMATTER = Intl.DateTimeFormat("en-US", {
@@ -31,27 +34,53 @@ const DATE_FORMATTER = Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-function ArchiveTable({ items, limit }: DocumentResponse) {
-  const headers = ["code", "title", "type", "date", "sources"];
+function ArchiveTable({
+  items,
+  limit,
+  sortBy,
+  sortAsc,
+  onSortChange
+}: DocumentResponse) {
+  const headers = [
+    { key: "canonical_citation", label: "code", sortable: true },
+    { key: "title", label: "title", sortable: false },
+    { key: "doc_type", label: "type", sortable: true },
+    { key: "date_promulgated", label: "date", sortable: true },
+    { key: "source", label: "sources", sortable: false }
+  ]
+
   const emptyRowCount = Math.max(0, limit - items.length);
   const displayRows = [...items, ...Array(emptyRowCount).fill(null)];
 
   return (
-    <div className="w-full  border border-slate-200 rounded-lg">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-slate-200 table-fixed">
-          <thead>
-            <tr>
-              {headers.map((key) => (
-                <th
-                  key={key}
-                  className="text-sm uppercase font-bold text-slate-500 py-2 px-6 text-left bg-slate-100"
-                >
-                  <div>{key}</div>
-                </th>
-              ))}
-            </tr>
-          </thead>
+    <div className="w-full border border-slate-200 rounded-lg">
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-slate-200 table-fixed">
+        <thead>
+          <tr>
+            {headers.map(({ key, label, sortable }) => (
+              <th
+                key={key}
+                className={
+                  "transition-colors text-sm uppercase font-bold text-slate-500 py-2 px-6 text-left bg-slate-100 " +
+                  (sortable ? "hover:bg-slate-200 cursor-pointer select-none" : "cursor-default select-none")
+                }
+                onClick={sortable ? () => onSortChange(key) : undefined}
+              >
+                <div className="flex items-center gap-1">
+                  {label}
+                  {sortable && (
+                    <span>
+                      {sortBy === key
+                        ? (sortAsc ? <ChevronUp size={16} /> : <ChevronDown size={16} />)
+                        : <ChevronsUpDown size={16} />}
+                    </span>
+                  )}
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
           <tbody className="bg-white divide-y divide-slate-200">
             {displayRows.map((props: Document) =>
               props ? (
@@ -85,7 +114,7 @@ function ArchiveTableRow({
 
   const displayDate = rawDate ? DATE_FORMATTER.format(new Date(rawDate)) : "-";
   return (
-    <tr className="group relative">
+    <tr className="group relative hover:bg-slate-50 transition-colors">
       <td className="px-6 py-4 text-blue-900 whitespace-nowrap font-mono font-medium text-sm">
         <a className="after:absolute after:inset-0" href={`/archive/${id}`}>
           {canonical_citation}
@@ -105,7 +134,7 @@ function ArchiveTableRow({
         {displayDate}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-slate-500 text-sm">
-        <div className="flex items-center gap-1.5 bg-white">
+        <div className="flex items-center gap-1.5">
           <Globe size={12} className="text-slate-400" />
           <span>{metadata_fields.source_name}</span>
         </div>

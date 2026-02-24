@@ -4,11 +4,12 @@ import { ArrowLeft, Flag, Download } from "lucide-react";
 const { docType, docId } = Astro.props;
 ---
 
-<div class="h-16 bg-white w-full z-50 shadow-sm">
+<div class="h-16 bg-white w-full z-50 shadow-sm sticky top-16 select-none">
 	<nav class="flex h-full items-center py-3 px-8 justify-between">
 		<div class="flex items-center gap-4">
 			<button
-				class="flex items-center gap-1 texm-sm font-medium text-slate-500 hover:text-blue-900"
+				class="flex items-center gap-1 texm-sm font-medium text-slate-500 hover:text-blue-900 cursor-pointer"
+				onclick="window.location.href='/archive'"
 				><ArrowLeft size={16} /> Back</button
 			>
 			<div class="bg-slate-300 h-4 w-px mx-2"></div>
@@ -22,11 +23,11 @@ const { docType, docId } = Astro.props;
 		<div class="flex items-center gap-2">
 			<button
 				id="open-mdl-btn"
-				class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md transition-colors"
+				class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md transition-colors cursor-pointer"
 				><Flag size={18} /></button
 			>
 			<button
-				class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md transition-colors"
+				class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md transition-colors cursor-pointer"
 				><Download size={18} /></button
 			>
 		</div>
