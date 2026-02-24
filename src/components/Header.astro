@@ -39,7 +39,10 @@ const inactive =
 					class={currentPath === "/archive" ? active : inactive}
 					>Browse Archive</a
 				>
-				<a href="/" class="">About</a>
+				<a
+					href="/about"
+					class={currentPath === "/about" ? active : inactive}
+				>About</a>
 				<button class="bg-blue-900 rounded-md text-white p-2">
 					Contribute
 				</button>
