@@ -34,7 +34,7 @@ const { currentSource, sources, currentSourceUrl } = Astro.props;
 		<div
 			class="group relative flex items-center justify-between px-3 py-2 rounded-md border bg-slate-50 border-slate-200 text-slate-500 text-xs"
 		>
-			<a href={currentSourceUrl}>View on {currentSource}</a>
+			<a href={currentSourceUrl} target="_blank" rel="noopener">View on {currentSource}</a>
 			<ExternalLink size={12} />
 		</div>
 	</div>

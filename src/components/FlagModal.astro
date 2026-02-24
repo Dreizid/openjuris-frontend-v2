@@ -61,20 +61,31 @@ const { id } = Astro.props;
 <script>
 	import { createFlag, type IssueType } from "@/services/flagService";
 
-	const openBtn = document.querySelector("#open-mdl-btn");
+	const openBtn = document.querySelectorAll("#open-mdl-btn");
 	const closeBtn = document.querySelector("#close-mdl-btn");
 	const cancelBtn = document.querySelector("#cancel-mdl-btn");
 
 	const dialog = document.querySelector("dialog");
 	const submitBtn = document.querySelector("#submit-btn");
 
-	openBtn?.addEventListener("click", () => {
-		dialog?.showModal();
+	openBtn.forEach(btn => {
+		btn.addEventListener("click", () => {
+			dialog?.showModal();
+		});
 	});
 
-	const closeModal = () => dialog?.close();
+	const closeModal = (event: Event) => {
+		event.preventDefault();
+		dialog?.close();
+	};
 	closeBtn?.addEventListener("click", closeModal);
 	cancelBtn?.addEventListener("click", closeModal);
+
+	dialog?.addEventListener("click", (event: Event) => {
+		if (event.target === dialog) {
+			dialog.close();
+		}
+	});
 
 	submitBtn?.addEventListener("click", async () => {
 		const issueType = (
