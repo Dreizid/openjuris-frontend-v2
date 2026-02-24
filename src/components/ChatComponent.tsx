@@ -76,7 +76,19 @@ function ChatComponent({ token }: ChatProps) {
         });
       }
     } catch (error) {
-      console.error(error);
+      const errorMessage =
+        "Something went wrong on our end. Please try asking again.";
+
+      const fakeJsonChunk = JSON.stringify({
+        token: errorMessage,
+
+        is_final: false,
+      });
+
+      processChunk(`data: ${fakeJsonChunk}`);
+
+      setIsStreaming(false);
+      return;
     }
   };
 
