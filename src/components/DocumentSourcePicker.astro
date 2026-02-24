@@ -1,0 +1,41 @@
+---
+import { Globe, Check, ExternalLink } from "lucide-react";
+interface Props {
+	currentSource: string;
+	sources: string[];
+	currentSourceUrl: string;
+}
+const { currentSource, sources, currentSourceUrl } = Astro.props;
+---
+
+<div class="bg-white border border-slate-200 rounded-md shadow p-4">
+	<div
+		class="flex text-slate-500 items-center text-sm font-semibold gap-2 mb-2"
+	>
+		<Globe size={12} /> Source Provider
+	</div>
+	<div class="space-y-2">
+		<p class="text-[10px] text-slate-400">
+			Available from {sources.length} sources:
+		</p>
+		<div class="flex flex-col gap-1.5">
+			{
+				sources.map((source: string) => (
+					<div
+						id={source}
+						class={`group relative text-xs flex items-center justify-between px-3 py-2 rounded-md border transition-all ${currentSource === source ? "bg-blue-50 border-blue-200 text-blue-900 font-medium shadow-sm" : "bg-white border-transparent text-slate-500 hover:bg-slate-50 hover:border-slate-200"}`}
+					>
+						<a>{source}</a>
+						{currentSource === source && <Check size={12} />}
+					</div>
+				))
+			}
+		</div>
+		<div
+			class="group relative flex items-center justify-between px-3 py-2 rounded-md border bg-slate-50 border-slate-200 text-slate-500 text-xs"
+		>
+			<a href={currentSourceUrl}>View on {currentSource}</a>
+			<ExternalLink size={12} />
+		</div>
+	</div>
+</div>

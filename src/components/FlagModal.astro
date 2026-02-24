@@ -1,0 +1,92 @@
+---
+import { X, TriangleAlert } from "lucide-react";
+import IssueTypeSelector from "@/components/IssueTypeSelector.tsx";
+
+const { id } = Astro.props;
+---
+
+<dialog
+	class="fixed inset-0 m-auto rounded-2xl shadow-2xl p-0 backdrop:bg-slate-900/50 open:flex flex-col max-w-xl w-full backdrop:backdrop-blur-[2px]"
+>
+	<form>
+		<div class="bg-white flex-1 max-w-2xl">
+			<div class="border-b border-slate-200 flex justify-between py-4 px-8">
+				<h1 class="font-bold">Report an Issue</h1>
+				<button id="close-mdl-btn" class="text-slate-500">
+					<X size={24} />
+				</button>
+			</div>
+			<div class="p-8">
+				<div class="mb-4">
+					<p class="uppercase text-slate-500 text-sm font-bold">Issue type</p>
+					<IssueTypeSelector client:load />
+				</div>
+				<div>
+					<p class="uppercase text-slate-500 font-bold text-sm">Description</p>
+					<textarea
+						id="description-field"
+						placeholder="Please describe the error. If possible, include the correct text..."
+						class="border border-slate-200 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-slate-500 focus:border-transparent w-full h-48"
+					></textarea>
+				</div>
+				<div
+					class="bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-600 flex gap-2 p-2 my-4"
+				>
+					<TriangleAlert />
+					<p class="text-yellow-900">
+						This is an open-source project. Your contribution will be reviewed
+						by the community maintainers before being applied.
+					</p>
+				</div>
+				<div class="grid grid-cols-2 gap-2">
+					<button
+						type="button"
+						id="cancel-mdl-btn"
+						class="rounded-lg flex justify-center bg-white text-slate-900 px-3 py-1.5 border border-slate-200"
+						>Cancel</button
+					>
+					<button
+						type="submit"
+						id="submit-btn"
+						class="rounded-lg flex justify-center bg-blue-900 text-white px-3 py-1.5 border border-blue-900"
+						>Submit Report</button
+					>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="archive-id-bridge" value={id} />
+	</form>
+</dialog>
+
+<script>
+	import { createFlag, type IssueType } from "@/services/flagService";
+
+	const openBtn = document.querySelector("#open-mdl-btn");
+	const closeBtn = document.querySelector("#close-mdl-btn");
+	const cancelBtn = document.querySelector("#cancel-mdl-btn");
+
+	const dialog = document.querySelector("dialog");
+	const submitBtn = document.querySelector("#submit-btn");
+
+	openBtn?.addEventListener("click", () => {
+		dialog?.showModal();
+	});
+
+	const closeModal = () => dialog?.close();
+	closeBtn?.addEventListener("click", closeModal);
+	cancelBtn?.addEventListener("click", closeModal);
+
+	submitBtn?.addEventListener("click", async () => {
+		const issueType = (
+			document.querySelector("#selected-issue") as HTMLInputElement
+		)?.value as IssueType;
+		const documentId = (
+			document.querySelector("#archive-id-bridge") as HTMLInputElement
+		)?.value;
+		const description = (
+			document.querySelector("#description-field") as HTMLTextAreaElement
+		)?.value.trim();
+		const response = await createFlag({ documentId, issueType, description });
+		console.log(response);
+	});
+</script>

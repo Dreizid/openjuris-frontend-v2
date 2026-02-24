@@ -1,0 +1,51 @@
+---
+export const prerender = false;
+import DocumentView from "@components/DocumentView.astro";
+import DocumentHeader from "@/components/DocumentHeader.astro";
+import DocumentTableOfContent from "@/components/DocumentTableOfContent.astro";
+import DocumentSourcePicker from "@/components/DocumentSourcePicker.astro";
+import FlagModal from "@/components/FlagModal.astro";
+import Layout from "@/layouts/Layout.astro";
+import { removeFrontmatter } from "@/utils/frontmatter-parser";
+import { renderMarkdownWithToc } from "@/utils/markdown-engine";
+import { getDocumentById } from "@/services/documentService";
+
+interface Props {
+	id: string;
+}
+const { id } = Astro.params;
+
+if (!id) {
+	return Astro.redirect("/404");
+}
+const result = await getDocumentById(id);
+const cleanMarkdown = removeFrontmatter(result.content_markdown);
+const { html, toc } = await renderMarkdownWithToc(cleanMarkdown);
+const source = result.metadata_fields.source_name;
+const sources = [source]; // Replace with sources array
+---
+
+<Layout>
+	<div class="flex flex-col flex-1 min-h-0">
+		<DocumentHeader
+			docType={result.doc_type}
+			docId={result.canonical_citation}
+		/>
+		<div class="flex flex-1 min-h-0 justify-center">
+			<div class="flex max-w-6xl w-full">
+				<div>
+					<aside class="shrink-0 w-56 p-4 flex flex-col flex-1 min-h-0">
+						<DocumentTableOfContent headers={toc} />
+					</aside>
+					<DocumentSourcePicker
+						currentSource={source}
+						sources={sources}
+						currentSourceUrl={result.source_url}
+					/>
+				</div>
+				<DocumentView html={html} />
+			</div>
+		</div>
+	</div>
+	<FlagModal id={id} />
+</Layout>
