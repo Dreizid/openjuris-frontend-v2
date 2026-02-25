@@ -23,11 +23,12 @@ if (!id) {
 const result = await getDocumentById(id);
 
 let html
+let cleanMarkdown
 let toc: TocItem[] = []
 if (!result || !result.content_markdown ) {
 	html = `<div class="text-center py-16 content-center h-screen text-slate-700"><h1>404 Not Found</h1><p>Document not found.</p></div>`;
 } else {
-	const cleanMarkdown = removeFrontmatter(result.content_markdown);
+	cleanMarkdown = removeFrontmatter(result.content_markdown);
 	const rendered = await renderMarkdownWithToc(cleanMarkdown);
 	html = `<div class="text-center text-slate-500 tracking-widest mb-8 mt-4 text-sm font-sans">
         	REPUBLIC OF THE PHILIPPINES<br />
@@ -47,6 +48,7 @@ const sources = [source]; // Replace with sources array
 		<DocumentHeader
 			docType={result.doc_type}
 			docId={result.canonical_citation}
+			markdown={cleanMarkdown}
 		/>
 		<div class="flex flex-1 min-h-0 justify-center">
 			<div class="flex max-w-6xl w-full">

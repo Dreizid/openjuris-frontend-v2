@@ -1,7 +1,8 @@
 ---
 import { ArrowLeft, Flag, Download } from "lucide-react";
 
-const { docType, docId } = Astro.props;
+
+const { docType, docId, markdown } = Astro.props;
 ---
 
 <div class="h-16 bg-white w-full z-50 shadow-sm sticky top-16 select-none">
@@ -26,6 +27,46 @@ const { docType, docId } = Astro.props;
 				class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md transition-colors cursor-pointer"
 				><Flag size={18} /></button
 			>
+			<button
+				id="download-button"
+				class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md transition-colors cursor-pointer"
+				>
+				<Download size={18}/>
+			</button>
 		</div>
 	</nav>
+	<input type="hidden" id="document-id" value={docId}>
+	<input type="hidden" id="markdown" value={markdown}>
 </div>
+
+<script>
+import { getGeneratedPDF } from "@/services/documentService";
+
+	const downloadButton = document.querySelector("#download-button");
+
+	async function downloadGeneratedPDF() {
+        const docId = (document.querySelector("#document-id") as HTMLInputElement).value as string;
+        const markdown = (document.querySelector("#markdown") as HTMLInputElement).value as string;
+
+		try {
+            const response = await getGeneratedPDF(markdown)
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.style.display = 'none';
+            link.href = blobUrl;
+            link.download = `OpenJuris_${docId}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            console.error("Error downloading the PDF:", error);
+        }
+    }
+
+	downloadButton?.addEventListener("click", (event: Event) => {
+		downloadGeneratedPDF()
+	})
+
+</script>

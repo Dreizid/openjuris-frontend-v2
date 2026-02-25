@@ -96,3 +96,25 @@ export async function getDocumentsTotal(stat_name: string) {
   const result = await response.json();
   return await result
 }
+
+export async function getGeneratedPDF(markdown: string) {
+  const url = buildUrl("/api/v1/download/pdf", BASE_URL)
+  const response = await fetch(
+    url,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": `${INTERNAL_API}`
+      },
+      body: JSON.stringify({ markdown_text: markdown })
+    },
+  );
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`Backend Crash`, errorText);
+    throw new Error(`Server returned ${response.status}: ${errorText}`);
+  }
+
+  return await response
+}
